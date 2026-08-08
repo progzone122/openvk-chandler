@@ -54,12 +54,7 @@ class Log extends DBEntity
 
     public function getObjectType(): string
     {
-        $type = tr("log_" . $this->getObjectTable());
-        if ($type === "@log_" . $this->getObjectTable()) {
-            return str_replace(CHANDLER_ROOT_CONF["preferences"]["logs"]["entitiesNamespace"], "", $this->getRecord()->object_model);
-        } else {
-            return $type;
-        }
+        return str_replace(CHANDLER_ROOT_CONF["preferences"]["logs"]["entitiesNamespace"], "", $this->getRecord()->object_model);
     }
 
     public function getObjectName(): string

@@ -5,8 +5,6 @@ parameters:
         - bin/
         - install/
     tmpDir: tmp/phpstan
-    bootstrapFiles:
-        - stubs/tr.php
     scanFiles:
         - chandler/Bootstrap.php
     excludePaths:

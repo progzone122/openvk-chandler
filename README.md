@@ -16,7 +16,7 @@ Chandler provides the foundation — routing, ORM, templating, auth, sessions, e
 - **Templating** — [Latte](https://latte.nette.org) engine with custom `{css}`, `{script}`, `{presenter}` tags
 - **Auth** — Argon2id password hashing, session tokens (JWT), IP/UA validation
 - **Captcha** — built-in, served as WebP, stored captcha with encryption
-- **Email** — SwiftMailer SMTP or Postmark API
+- **Email** — Symfony Mailer SMTP or Postmark API
 - **Events** — `EventDispatcher` for hook-based plugins
 - **Console** — Symfony Console commands
 - **Config** — YAML with disk caching

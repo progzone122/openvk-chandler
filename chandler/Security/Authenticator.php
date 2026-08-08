@@ -8,7 +8,7 @@ use Chandler\Session\Session;
 use Chandler\Patterns\TSimpleSingleton;
 use Chandler\Database\DatabaseConnection;
 
-class Authenticator
+final class Authenticator
 {
     use TSimpleSingleton;
     private $db;

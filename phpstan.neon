@@ -11,14 +11,3 @@ parameters:
         - chandler/Bootstrap.php
     excludePaths:
         - chandler/bindata/*
-    ignoreErrors:
-        -
-            # Singleton pattern: the constructor is private, so no subclass
-            # can ever be instantiated and `new static()` always creates
-            # the declaring class itself.
-            identifier: new.static
-            path: chandler/Patterns/TSimpleSingleton.php
-        -
-            # Same reasoning as above: DatabaseConnection is a singleton.
-            identifier: new.static
-            path: chandler/Database/DatabaseConnection.php

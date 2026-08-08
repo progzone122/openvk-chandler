@@ -7,7 +7,7 @@ namespace Chandler\Extensions;
 use Chandler\Patterns\TSimpleSingleton;
 use Chandler\MVC\Routing\Router;
 
-class ExtensionManager
+final class ExtensionManager
 {
     use TSimpleSingleton;
     private $extensions = [];

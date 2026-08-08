@@ -8,7 +8,7 @@ use Nette\Utils\Image;
 use Chandler\Session\Session;
 use Chandler\Patterns\TSimpleSingleton;
 
-class CaptchaManager
+final class CaptchaManager
 {
     use TSimpleSingleton;
 

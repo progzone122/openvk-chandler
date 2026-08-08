@@ -11,7 +11,7 @@ use Chandler\MVC\Exceptions\InterruptedException;
 use Chandler\MVC\IPresenter;
 use Nette\DI;
 
-class Router
+final class Router
 {
     use TSimpleSingleton;
     public const HANDLER_DELIMITER = "%([#@❤]|\->)%";

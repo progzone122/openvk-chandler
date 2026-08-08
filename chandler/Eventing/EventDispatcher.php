@@ -6,7 +6,7 @@ namespace Chandler\Eventing;
 
 use Chandler\Patterns\TSimpleSingleton;
 
-class EventDispatcher
+final class EventDispatcher
 {
     use TSimpleSingleton;
     private $hooks = [];

@@ -14,7 +14,7 @@ use Predis\Client as RedisClient;
  * @author kurotsun <celestine@vriska.ru>
  * @author Vladimir Barinov <veselcraft@icloud.com>
  */
-class SignalManager
+final class SignalManager
 {
     use TSimpleSingleton;
 

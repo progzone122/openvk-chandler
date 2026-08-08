@@ -14,6 +14,7 @@ use Nette\Database\UniqueConstraintViolationException;
  * User class.
  *
  * @author kurotsun <celestine@vriska.ru>
+ * @phpstan-consistent-constructor
  */
 class User
 {

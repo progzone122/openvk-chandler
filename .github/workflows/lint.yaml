@@ -33,3 +33,6 @@ jobs:
 
       - name: PHP CS Fixer
         run: vendor/bin/php-cs-fixer fix --dry-run --diff
+
+      - name: PHPStan
+        run: vendor/bin/phpstan analyse --no-progress

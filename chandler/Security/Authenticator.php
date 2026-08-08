@@ -23,8 +23,6 @@ class Authenticator
         $this->session = Session::i();
     }
 
-    private function verifySuRights(string $uId): bool {}
-
     private function makeToken(string $user, string $ip, string $ua): string
     {
         $data  = ["user" => $user, "ip" => $ip, "ua" => $ua];
@@ -74,7 +72,7 @@ class Authenticator
 
         $su = $this->session->get("_su");
         $cacheKey = $token . "\x00" . ($su ?? "");
-        return @$this->cache[$cacheKey] ??= $this->resolveUser($token, $su);
+        return @self::$cache[$cacheKey] ??= $this->resolveUser($token, $su);
     }
 
     private function resolveUser(string $token, $su)

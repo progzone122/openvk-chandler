@@ -68,10 +68,10 @@ class ExtensionManager
 
             $constName = str_replace("-", "_", mb_strtoupper($name));
             if (!defined($constName . "_ROOT")) {
-                define($constName . "_ROOT", $extPath, false);
+                define($constName . "_ROOT", $extPath);
             }
             if (!defined($constName . "_ROOT_CONF")) {
-                define($constName . "_ROOT_CONF", chandler_parse_yaml("$extPath/$name.yml"), false);
+                define($constName . "_ROOT_CONF", chandler_parse_yaml("$extPath/$name.yml"));
             }
 
             Router::setExtensionPath($name, $extPath);

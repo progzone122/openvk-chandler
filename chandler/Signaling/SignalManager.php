@@ -163,7 +163,7 @@ class SignalManager
                     "updates" => [],
                 ]));
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Couldn't connect to Redis server, fallback to old sqlite method. Exception Message: " . $e->getMessage());
         }
 
@@ -291,7 +291,7 @@ class SignalManager
             try {
                 $redisClient = new RedisClient(CHANDLER_ROOT_CONF["redisUrl"]);
                 $redisClient->publish('im' . $for, json_encode([$id, $event]));
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 error_log("Couldn't connect to Redis server and push the event. Exception Message: " . $e->getMessage());
             }
         }

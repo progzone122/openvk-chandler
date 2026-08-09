@@ -3,9 +3,4 @@ parameters:
     paths:
         - chandler/
         - bin/
-        - install/
     tmpDir: tmp/phpstan
-    scanFiles:
-        - chandler/Bootstrap.php
-    excludePaths:
-        - chandler/bindata/*

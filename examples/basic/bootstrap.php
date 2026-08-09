@@ -19,7 +19,7 @@ require __DIR__ . "/vendor/autoload.php";
 
 // ── Project root ─────────────────────────────────────────────────
 // Tells Chandler where to find logs/, tmp/, cache/, etc.
-define("CHANDLER_ROOT", __DIR__, false);
+define("CHANDLER_ROOT", __DIR__);
 
 // ── YAML cache ───────────────────────────────────────────────────
 // Must be called before any config parsing.
@@ -29,7 +29,7 @@ chandler_init_yaml_cache();
 // A single YAML file holds both Chandler framework settings
 // (chandler:) and app-specific settings (helloapp:).
 $config = chandler_parse_yaml(__DIR__ . "/helloapp.yml");
-define("CHANDLER_ROOT_CONF", $config["chandler"], false);
+define("CHANDLER_ROOT_CONF", $config["chandler"]);
 
 // ── Register the app as a builtin extension ──────────────────────
 // Once registered, ExtensionManager will:

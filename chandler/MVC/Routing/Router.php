@@ -207,7 +207,7 @@ class Router
         return $this->delegateController($route->namespace, $route->presenter, $route->action, $parameters);
     }
 
-    public function delegateStatic(string $namespace, string $path): string
+    public function delegateStatic(string $namespace, string $path, ?array $queryParams): string
     {
         $static = $static = $this->statics[$namespace];
         if (!isset($static)) {
@@ -225,9 +225,17 @@ class Router
             }
         }
 
+        // This is needed for ES6 modules. They do not use "?mod=" parameter and may be irrelevant
+
+        $isLighterCaching = system_extension_mime_type($file) === "text/javascript" && $queryParams["mod"] == null;
+        if ($isLighterCaching) {
+            header("Cache-Control: no-cache, max-age=3600");
+        } else {
+            header("Cache-Control: public, must-understand, immutable, max-age=628000000");
+        }
+
         header("Content-Type: " . system_extension_mime_type($file) ?? "text/plain; charset=unknown-8bit");
         header("Content-Size: " . filesize($file));
-        header("Cache-Control: public, must-understand, immutable, max-age=628000000");
         header("ETag: $hash");
 
         readfile($file);
@@ -334,7 +342,15 @@ class Router
 
         if (preg_match("%^\/assets\/packages\/static\/([A-z_\\-]++)\/(.++)$%", $this->url, $matches)) {
             [$j, $namespace, $file] = $matches;
-            return $this->delegateStatic($namespace, $file);
+            $queryString = parse_url(preg_replace("%/+%", "/", $url), PHP_URL_QUERY);
+
+            try {
+                parse_str($queryString, $queryParams);
+            } catch (\Throwable $e) {
+                $queryParams = [];
+            }
+
+            return $this->delegateStatic($namespace, $file, $queryParams);
         }
 
         $match = $this->getMatchingRoute($this->url);

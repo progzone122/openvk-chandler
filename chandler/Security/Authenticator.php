@@ -8,7 +8,7 @@ use Chandler\Session\Session;
 use Chandler\Patterns\TSimpleSingleton;
 use Chandler\Database\DatabaseConnection;
 
-class Authenticator
+final class Authenticator
 {
     use TSimpleSingleton;
     private $db;
@@ -22,8 +22,6 @@ class Authenticator
         $this->db      = DatabaseConnection::i()->getContext();
         $this->session = Session::i();
     }
-
-    private function verifySuRights(string $uId): bool {}
 
     private function makeToken(string $user, string $ip, string $ua): string
     {
@@ -74,7 +72,7 @@ class Authenticator
 
         $su = $this->session->get("_su");
         $cacheKey = $token . "\x00" . ($su ?? "");
-        return @$this->cache[$cacheKey] ??= $this->resolveUser($token, $su);
+        return @self::$cache[$cacheKey] ??= $this->resolveUser($token, $su);
     }
 
     private function resolveUser(string $token, $su)

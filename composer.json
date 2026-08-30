@@ -8,7 +8,9 @@
     },
     "scripts": {
         "fix": "php-cs-fixer fix",
-        "lint": "php-cs-fixer fix --dry-run --diff --verbose"
+        "lint": "php-cs-fixer fix --dry-run --diff --verbose",
+        "analyse": "phpstan analyse --no-progress",
+        "analyse:examples": "phpstan analyse --no-progress -c phpstan.examples.neon"
     },
     "require": {
         "php": "~8.2",
@@ -43,6 +45,7 @@
         ]
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.90"
+        "friendsofphp/php-cs-fixer": "^3.90",
+        "phpstan/phpstan": "^2.2"
     }
 }

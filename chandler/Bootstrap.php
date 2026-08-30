@@ -3,7 +3,7 @@
 declare(strict_types=1);
 use Tracy\Debugger;
 
-define("CHANDLER_VER", "0.1.0", false);
+define("CHANDLER_VER", "0.1.0");
 
 /**
  * Bootstrap class, that is called during framework starting phase.
@@ -27,18 +27,22 @@ class Bootstrap
 
     private function ensureDirectoriesCreated(): void
     {
-        function makeDir($path)
-        {
-            return is_dir($path) || mkdir($path);
-        }
+        $dirs = [
+            "/logs",
+            "/tmp",
+            "/tmp/cache",
+            "/tmp/cache/database",
+            "/tmp/cache/templates",
+            "/tmp/cache/yaml",
+            "/tmp/plugins-artifacts",
+        ];
 
-        makeDir($this->projectRoot . "/logs");
-        makeDir($this->projectRoot . "/tmp");
-        makeDir($this->projectRoot . "/tmp/cache");
-        makeDir($this->projectRoot . "/tmp/cache/database");
-        makeDir($this->projectRoot . "/tmp/cache/templates");
-        makeDir($this->projectRoot . "/tmp/cache/yaml");
-        makeDir($this->projectRoot . "/tmp/plugins-artifacts");
+        foreach ($dirs as $dir) {
+            $path = $this->projectRoot . $dir;
+            if (!is_dir($path)) {
+                mkdir($path);
+            }
+        }
     }
 
     /**
@@ -118,7 +122,7 @@ class Bootstrap
             $ip = $_SERVER["REMOTE_ADDR"];
         }
 
-        define("CONNECTING_IP", $ip, false);
+        define("CONNECTING_IP", $ip);
     }
 
     /**
@@ -190,7 +194,7 @@ class Bootstrap
     public function ignite(bool $headless = false): void
     {
         if (!defined("CHANDLER_ROOT")) {
-            define("CHANDLER_ROOT", $this->projectRoot, false);
+            define("CHANDLER_ROOT", $this->projectRoot);
         }
 
         chandler_init_yaml_cache();

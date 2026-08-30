@@ -11,7 +11,7 @@ use Chandler\MVC\Exceptions\InterruptedException;
 use Chandler\MVC\IPresenter;
 use Nette\DI;
 
-class Router
+final class Router
 {
     use TSimpleSingleton;
     public const HANDLER_DELIMITER = "%([#@❤]|\->)%";
@@ -221,7 +221,8 @@ class Router
         $hash = "W/\"" . hash_file("snefru", $file) . "\"";
         if (isset($_SERVER["HTTP_IF_NONE_MATCH"])) {
             if ($_SERVER["HTTP_IF_NONE_MATCH"] === $hash) {
-                exit(header("HTTP/1.1 304"));
+                header("HTTP/1.1 304");
+                exit;
             }
         }
 

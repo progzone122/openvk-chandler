@@ -13,7 +13,7 @@ use Firebase\JWT\Key;
  *
  * @author kurotsun <celestine@vriska.ru>
  */
-class Session
+final class Session
 {
     use TSimpleSingleton;
     /**

@@ -6,7 +6,7 @@ namespace Chandler\Eventing;
 
 use Chandler\Patterns\TSimpleSingleton;
 
-class EventDispatcher
+final class EventDispatcher
 {
     use TSimpleSingleton;
     private $hooks = [];
@@ -20,7 +20,7 @@ class EventDispatcher
 
     public function pushEvent(Events\Event $event): Events\Event
     {
-        foreach ($hooks as $hook) {
+        foreach ($this->hooks as $hook) {
             if ($event instanceof Events\Cancelable) {
                 if ($event->isCancelled()) {
                     break;
@@ -28,7 +28,7 @@ class EventDispatcher
             }
 
             $method = "on" . str_replace("Event", "", get_class($event));
-            if (!method_exists($hook, $methodName)) {
+            if (!method_exists($hook, $method)) {
                 continue;
             }
 

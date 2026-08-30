@@ -1,0 +1,11 @@
+parameters:
+    level: 0
+    # Avoid mentiong a path that may lead to examples/basic/vendor
+    # as it contains a cyclical symlink to Chandler and bloats the check.
+    # "excludePaths" does not help.
+    paths:
+        - examples/basic/bootstrap.php
+        - examples/basic/init.php
+        - examples/basic/htdocs/
+        - examples/basic/Web/
+    tmpDir: tmp/phpstan-examples

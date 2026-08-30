@@ -8,7 +8,7 @@ use Nette\Database;
 use Nette\Caching\Storages\FileStorage;
 use Nette\Database\Conventions\DiscoveredConventions;
 
-class DatabaseConnection
+final class DatabaseConnection
 {
     private static $self = null;
 

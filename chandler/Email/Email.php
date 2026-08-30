@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Chandler\Email;
 
-use Swift_SmtpTransport;
-use Swift_Message;
-use Swift_Mailer;
 use Postmark\PostmarkClient;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email as MimeEmail;
 
 class Email
 {
@@ -32,17 +33,24 @@ class Email
                 CHANDLER_ROOT_CONF["email"]["postmark"]["stream"]
             );
         } else {
-            $transport = new Swift_SmtpTransport(CHANDLER_ROOT_CONF["email"]["host"], CHANDLER_ROOT_CONF["email"]["port"], CHANDLER_ROOT_CONF["email"]["ssl"] ? "ssl" : null);
-            $transport->setUsername(CHANDLER_ROOT_CONF["email"]["user"] ?? CHANDLER_ROOT_CONF["email"]["addr"]);
-            $transport->setPassword(CHANDLER_ROOT_CONF["email"]["pass"]);
+            $dsn = sprintf(
+                "%s://%s:%s@%s:%s",
+                CHANDLER_ROOT_CONF["email"]["ssl"] ? "smtps" : "smtp",
+                rawurlencode(CHANDLER_ROOT_CONF["email"]["user"] ?? CHANDLER_ROOT_CONF["email"]["addr"]),
+                rawurlencode(CHANDLER_ROOT_CONF["email"]["pass"]),
+                CHANDLER_ROOT_CONF["email"]["host"],
+                CHANDLER_ROOT_CONF["email"]["port"]
+            );
+            $transport = Transport::fromDsn($dsn);
 
-            $message = new Swift_Message($subject);
+            $message = new MimeEmail();
+            $message->from(new Address(CHANDLER_ROOT_CONF["email"]["addr"]));
+            $message->to($to);
+            $message->subject($subject);
+            $message->html($html);
             $message->getHeaders()->addTextHeader("Sensitivity", "Company-Confidential");
-            $message->setFrom(CHANDLER_ROOT_CONF["email"]["addr"]);
-            $message->setTo($to);
-            $message->setBody($html, "text/html");
 
-            $mailer = new Swift_Mailer($transport);
+            $mailer = new Mailer($transport);
             return $mailer->send($message);
         }
     }

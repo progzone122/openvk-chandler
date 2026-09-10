@@ -86,6 +86,10 @@ abstract class SimplePresenter implements IPresenter
 
     protected function redirect(string $location, int $code = 2): void
     {
+        if (!$this->isSafeRedirect($location)) {
+            $this->throwError(400, "Bad Request", "Invalid redirect target.");
+        }
+
         $code = 300 + $code;
         if (($code <=> 300) !== 0 && $code > 399) {
             return;
@@ -94,6 +98,58 @@ abstract class SimplePresenter implements IPresenter
         header("HTTP/1.1 $code");
         header("Location: $location");
         exit;
+    }
+
+    private function normalizeHost(string $host): string
+    {
+        $host = strtolower(trim($host));
+
+        // localhost:8080 -> localhost
+        if (str_contains($host, ":")) {
+            $host = explode(":", $host)[0];
+        }
+
+        return $host;
+    }
+
+    private function isSafeRedirect(string $location): bool
+    {
+        // Check relative paths. Disallow the use of workarounds.
+        if (
+            str_starts_with($location, "/")
+            && !str_starts_with($location, "//")
+            && !str_contains($location, "\\")
+        ) {
+            return true;
+        }
+
+        $scheme = strtolower((string) parse_url($location, PHP_URL_SCHEME));
+        if (!in_array($scheme, ["http", "https"], true)) {
+            return false;
+        }
+
+        $host = parse_url($location, PHP_URL_HOST);
+        if (!is_string($host) || $host === "") {
+            return false;
+        }
+        $host = $this->normalizeHost($host);
+
+        // Whitelist of domains to which redirects are allowed
+        $allowedHosts = [];
+
+        if (defined("OPENVK_ROOT_CONF")) {
+            // Instance domains (including mirrors)
+            foreach (OPENVK_ROOT_CONF["openvk"]["mirrors"] ?? [] as $mirror) {
+                $allowedHosts[] = $this->normalizeHost((string) $mirror);
+            }
+
+            // External trusted domains (specified in the config)
+            foreach (OPENVK_ROOT_CONF["openvk"]["trustedRedirectHosts"] ?? [] as $trusted) {
+                $allowedHosts[] = $this->normalizeHost((string) $trusted);
+            }
+        }
+
+        return in_array($host, $allowedHosts, true);
     }
 
     protected function pass(string $to, ...$args): void
